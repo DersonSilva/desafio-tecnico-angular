@@ -12,6 +12,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { UserModalComponent } from '../user-modal/user-modal';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FabButtonComponent } from '../../../../shared/components/fab-button/fab-button';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-user-list',
@@ -34,6 +35,7 @@ export class UserListComponent {
   private destroyRef = inject(DestroyRef);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
+  private breakpoint = inject(BreakpointObserver);
 
   users = signal<User[]>([]);
   loading = signal(false);
@@ -80,9 +82,12 @@ export class UserListComponent {
   }
 
   onOpenModal(user?: User) {
+    const isMobile = this.breakpoint.isMatched('(max-width: 640px)');
+
     const dialogRef = this.dialog.open(UserModalComponent, {
-      width: '700px',
+      width: isMobile ? '95vw' : '700px',
       maxWidth: '90vw',
+      maxHeight: '90vh',
       panelClass: 'custom-dialog',
       data: { user },
     });

@@ -17,7 +17,6 @@ export class UserModalComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   protected data = inject<{ user?: User }>(MAT_DIALOG_DATA);
 
-  // 🔥 FORM CORRIGIDO (sem erro de this)
   userForm: FormGroup = this.fb.group({
     id: [null],
     name: ['', [Validators.required, Validators.minLength(3)]],
@@ -41,9 +40,7 @@ export class UserModalComponent implements OnInit {
     this.setupMasks();
   }
 
-  // 🔥 MÁSCARAS
   private setupMasks() {
-    // CPF
     this.userForm
       .get('cpf')
       ?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
@@ -54,7 +51,6 @@ export class UserModalComponent implements OnInit {
         }
       });
 
-    // TELEFONE
     this.userForm
       .get('phone')
       ?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
@@ -66,7 +62,6 @@ export class UserModalComponent implements OnInit {
         }
       });
 
-    // ALTERA TIPO
     this.userForm
       .get('phoneType')
       ?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
@@ -78,19 +73,16 @@ export class UserModalComponent implements OnInit {
       });
   }
 
-  // ✅ FORMAT CPF
   private formatCPF(value: string): string {
     if (!value) return '';
 
     const numbers = value.replace(/\D/g, '').slice(0, 11);
-
     return numbers
       .replace(/(\d{3})(\d)/, '$1.$2')
       .replace(/(\d{3})(\d)/, '$1.$2')
       .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
   }
 
-  // ✅ VALIDAR CPF REAL
   private isValidCPF(cpf: string): boolean {
     if (!cpf) return false;
 
