@@ -1,12 +1,14 @@
-<!-- user-card.component.html -->
-<div class="bg-white p-4 rounded-lg shadow border flex justify-between items-center mb-3">
-  <div class="flex items-center gap-4">
-    <mat-icon class="text-gray-400">person</mat-icon>
-    <div>
-      <p class="font-bold text-gray-800">{{ user.name }}</p>
-      <p class="text-sm text-gray-500">{{ user.email }}</p>
-    </div>
-  </div>
+<div class="bg-white p-4 shadow-sm grid grid-cols-[40px_1fr_1fr_40px] items-center mb-3">
+  <mat-icon class="text-gray-400">person</mat-icon>
+
+  <span class="font-semibold text-gray-800 truncate">
+    {{ user.name }}
+  </span>
+
+  <span class="text-sm text-gray-500 truncate text-start">
+    {{ user.email }}
+  </span>
+
   <button mat-icon-button (click)="edit.emit(user)">
     <mat-icon>edit</mat-icon>
   </button>

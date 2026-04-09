@@ -1,9 +1,43 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: #e6e6e6;
+}
 
 .custom-dialog .mat-mdc-dialog-container,
 .custom-dialog .mat-mdc-dialog-surface {
-  border-radius: 0 !important; /* 🔥 totalmente quadrado */
+  border-radius: 0 !important;
   padding: 0 !important;
+}
+
+/* Toast de Sucesso */
+.success-snackbar.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  background-color: #2e7d32 !important;
+}
+
+.success-snackbar .mdc-snackbar__label {
+  color: #ffffff !important;
+}
+
+.success-snackbar .mat-mdc-snack-bar-action button {
+  color: #ffffff !important;
+}
+
+/* Toast de Erro  */
+.error-snackbar.mat-mdc-snack-bar-container .mdc-snackbar__surface {
+  background-color: #d32f2f !important;
+}
+
+.error-snackbar .mdc-snackbar__label {
+  color: #ffffff !important;
+}
+
+.error-snackbar .mat-mdc-snack-bar-action button {
+  color: #ffffff !important;
 }
