@@ -1,1 +1,94 @@
-<p>user-modal works!</p>
+<div class="bg-white w-full">
+  <!-- HEADER -->
+  <div class="px-6 pt-5 pb-3">
+    <h2 class="text-gray-800 font-semibold text-base">
+      {{ data.user ? 'Editar usuário' : 'Adicionar novo usuário' }}
+    </h2>
+  </div>
+
+  <!-- FORM -->
+  <div class="px-6 pb-4">
+    <form [formGroup]="userForm" class="flex flex-col gap-6">
+      <!-- EMAIL -->
+      <div>
+        <input
+          type="email"
+          placeholder="Usuário (e-mail) *"
+          formControlName="email"
+          class="w-full border-b border-gray-300 focus:border-blue-500 outline-none py-2 text-sm"
+        />
+      </div>
+
+      <!-- NOME -->
+      <div>
+        <input
+          type="text"
+          placeholder="Nome completo *"
+          formControlName="name"
+          class="w-full border-b border-gray-300 focus:border-blue-500 outline-none py-2 text-sm"
+        />
+      </div>
+
+      <div class="grid grid-cols-2 gap-6">
+        <!-- CPF -->
+        <div class="relative">
+          <input
+            type="text"
+            placeholder="CPF *"
+            formControlName="cpf"
+            [ngClass]="{
+              'border-red-500': userForm.get('cpf')?.invalid && userForm.get('cpf')?.touched,
+              'border-gray-300': !(userForm.get('cpf')?.invalid && userForm.get('cpf')?.touched),
+            }"
+            class="w-full border-b focus:border-blue-500 outline-none py-2 text-sm"
+          />
+
+          @if (userForm.get('cpf')?.invalid && userForm.get('cpf')?.touched) {
+            <span class="absolute left-0 -bottom-4 text-red-500 text-xs"> CPF inválido </span>
+          }
+        </div>
+
+        <!-- TELEFONE -->
+        <div class="flex items-end gap-3">
+          <input
+            type="text"
+            placeholder="Número do telefone *"
+            formControlName="phone"
+            class="flex-1 border-b border-gray-400 focus:border-blue-500 outline-none py-2 text-sm bg-transparent"
+          />
+
+          <div class="relative">
+            <select
+              formControlName="phoneType"
+              class="border-b border-gray-400 focus:border-blue-500 outline-none text-sm pb-2 bg-transparent appearance-none pr-6"
+            >
+              <option value="CELULAR">CELULAR</option>
+              <option value="FIXO">FIXO</option>
+            </select>
+
+            <span class="absolute right-0 bottom-2 text-gray-500 text-xs pointer-events-none">
+              ▼
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEXTO -->
+      <p class="text-blue-500 text-xs">
+        O usuário receberá uma senha provisória para acesso ao sistema por SMS.
+      </p>
+
+      <!-- BOTÃO -->
+      <div>
+        <button
+          type="button"
+          (click)="onSave()"
+          [disabled]="userForm.invalid"
+          class="bg-blue-500 hover:bg-blue-600 text-white text-sm px-5 py-2 rounded shadow disabled:opacity-50"
+        >
+          SALVAR
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

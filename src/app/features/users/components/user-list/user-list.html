@@ -1,1 +1,55 @@
-<p>user-list works!</p>
+<div class="w-full bg-gray-800 border-b border-gray-700 px-4 py-3 flex items-center">
+  <!-- Grupo esquerda -->
+  <div class="flex items-center gap-2">
+    <button mat-icon-button class="text-white">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <span class="text-white font-medium tracking-wide leading-none"> USUÁRIOS </span>
+  </div>
+
+  <!-- Search -->
+  <div class="ml-14 flex-1 max-w-lg">
+    <app-search-user (searchChange)="onSearch($event)"></app-search-user>
+  </div>
+</div>
+
+<!-- CONTEÚDO -->
+<div class="p-6 max-w-5xl mx-auto">
+  <!-- Loading -->
+  <ng-container *ngIf="loading()">
+    <div class="flex justify-center p-10">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+  </ng-container>
+
+  <!-- Error -->
+  <ng-container *ngIf="error()">
+    <app-error-message [message]="error() || ''"></app-error-message>
+  </ng-container>
+
+  <!-- LISTA -->
+  <ng-container *ngIf="filteredUsers().length > 0; else emptyState">
+    <div class="space-y-3 mb-4">
+      <app-user-card
+        *ngFor="let user of filteredUsers()"
+        [user]="user"
+        (edit)="onOpenModal($event)"
+      >
+      </app-user-card>
+    </div>
+  </ng-container>
+
+  <!-- EMPTY -->
+  <ng-template #emptyState>
+    <p class="text-center text-gray-500 mt-4">Nenhum usuário encontrado.</p>
+  </ng-template>
+</div>
+
+<!-- FAB -->
+<button
+  class="fixed bottom-6 right-6 bg-red-500 hover:bg-red-600 text-white w-14 h-14 rounded-full shadow-xl flex items-center justify-center"
+  (click)="onOpenModal()"
+>
+  <mat-icon>add</mat-icon>
+</button>
