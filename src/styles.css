@@ -1,43 +1,37 @@
 @import 'tailwindcss';
 
-html,
-body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  background-color: #e6e6e6;
-}
-
+/* Dialog */
 .custom-dialog .mat-mdc-dialog-container,
 .custom-dialog .mat-mdc-dialog-surface {
-  border-radius: 0 !important;
-  padding: 0 !important;
+  border-radius: 0;
+  padding: 0;
 }
 
-/* Toast de Sucesso */
-.success-snackbar.mat-mdc-snack-bar-container .mdc-snackbar__surface {
-  background-color: #2e7d32 !important;
+/* =========================
+   SNACKBAR BASE
+========================= */
+.mat-mdc-snack-bar-container .mdc-snackbar__label,
+.mat-mdc-snack-bar-container .mat-mdc-snack-bar-action button {
+  color: #ffffff;
 }
 
-.success-snackbar .mdc-snackbar__label {
-  color: #ffffff !important;
+/* =========================
+   SUCCESS
+========================= */
+.mat-mdc-snack-bar-container.success-snackbar .mdc-snackbar__surface {
+  background-color: #2e7d32;
 }
 
-.success-snackbar .mat-mdc-snack-bar-action button {
-  color: #ffffff !important;
+/* =========================
+   WARNING
+========================= */
+.mat-mdc-snack-bar-container.warning-snackbar .mdc-snackbar__surface {
+  background-color: #f59e0b;
 }
 
-/* Toast de Erro  */
-.error-snackbar.mat-mdc-snack-bar-container .mdc-snackbar__surface {
-  background-color: #d32f2f !important;
-}
-
-.error-snackbar .mdc-snackbar__label {
-  color: #ffffff !important;
-}
-
-.error-snackbar .mat-mdc-snack-bar-action button {
-  color: #ffffff !important;
+/* =========================
+   ERROR
+========================= */
+.mat-mdc-snack-bar-container.error-snackbar .mdc-snackbar__surface {
+  background-color: #d32f2f;
 }

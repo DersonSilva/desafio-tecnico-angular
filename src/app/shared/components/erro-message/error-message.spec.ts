@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ErroMessage } from './erro-message';
+import { ErrorMessageComponent } from './error-message';
 
-describe('ErroMessage', () => {
-  let component: ErroMessage;
-  let fixture: ComponentFixture<ErroMessage>;
+describe('ErrorMessage', () => {
+  let component: ErrorMessageComponent;
+  let fixture: ComponentFixture<ErrorMessageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ErroMessage],
+      imports: [ErrorMessageComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ErroMessage);
+    fixture = TestBed.createComponent(ErrorMessageComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

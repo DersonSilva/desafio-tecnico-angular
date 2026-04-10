@@ -1,8 +1,16 @@
 <div class="bg-white w-full h-auto">
-  <div class="px-4 md:px-6 pt-5 pb-3">
+  <div class="px-4 md:px-6 pt-5 pb-3 flex items-center justify-between">
     <h2 class="text-gray-800 font-semibold text-base">
       {{ data.user ? 'Editar usuário' : 'Adicionar novo usuário' }}
     </h2>
+
+    <button
+      mat-icon-button
+      (click)="onCancel()"
+      class="text-gray-500 hover:text-gray-700 cursor-pointer"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
   </div>
 
   <div class="px-4 md:px-6 pb-4">
@@ -68,7 +76,6 @@
           }
         </div>
 
-        <!-- TELEFONE -->
         <div class="flex flex-col gap-1">
           <div class="flex items-end gap-3">
             <input
@@ -78,14 +85,18 @@
               class="flex-1 border-b border-gray-400 focus:border-blue-500 outline-none py-2 text-sm bg-transparent"
             />
 
-            <div class="relative min-w-[80px]">
+            <div class="relative min-w-20">
               <select
                 formControlName="phoneType"
-                class="w-full border-b border-gray-400 focus:border-blue-500 outline-none text-sm pb-2 bg-transparent appearance-none pr-6"
+                class="w-full border-b border-gray-400 focus:border-blue-500 outline-none text-sm pb-2 bg-transparent appearance-none pr-6 cursor-pointer"
               >
                 <option value="CELULAR">CELULAR</option>
                 <option value="FIXO">FIXO</option>
               </select>
+
+              <mat-icon class="absolute right-0 bottom-2 text-gray-500 text-sm pointer-events-none">
+                arrow_drop_down
+              </mat-icon>
             </div>
           </div>
 

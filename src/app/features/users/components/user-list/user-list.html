@@ -14,20 +14,17 @@
 
 <div class="relative">
   <div class="p-6 max-w-5xl mx-auto">
-    <ng-container *ngIf="error()">
+    @if (error()) {
       <app-error-message [message]="error() || ''"></app-error-message>
-    </ng-container>
+    }
 
     <h2 class="text-gray-700 text-sm font-medium mb-3">Usuários cadastrados</h2>
 
-    <ng-container *ngIf="paginatedUsers().length > 0; else emptyState">
+    @if (paginatedUsers().length > 0) {
       <div class="space-y-3 mb-4">
-        <app-user-card
-          *ngFor="let user of paginatedUsers()"
-          [user]="user"
-          (edit)="onOpenModal($event)"
-        >
-        </app-user-card>
+        @for (user of paginatedUsers(); track user.id) {
+          <app-user-card [user]="user" (edit)="onOpenModal($event)"> </app-user-card>
+        }
       </div>
 
       <!-- PAGINADOR -->
@@ -37,20 +34,23 @@
         [pageIndex]="pageIndex()"
         [pageSizeOptions]="[5, 10, 20]"
         (page)="onPageChange($event)"
+        class="mt-5"
       >
       </mat-paginator>
-    </ng-container>
+    } @else {
+      <p class="text-center text-gray-500 mt-4">Nenhum usuário encontrado.</p>
+    }
 
     <ng-template #emptyState>
       <p class="text-center text-gray-500 mt-4">Nenhum usuário encontrado.</p>
     </ng-template>
   </div>
 
-  <ng-container *ngIf="loading()">
+  @if (loading()) {
     <div class="absolute inset-0 bg-white/70 flex items-center justify-center z-50">
       <app-loading-spinner></app-loading-spinner>
     </div>
-  </ng-container>
+  }
 </div>
 
 <app-fab-button (clicked)="onOpenModal()"></app-fab-button>

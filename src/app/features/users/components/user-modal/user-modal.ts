@@ -4,11 +4,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { User, PhoneType } from '../../store/user.model';
+import { MatIcon } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-user-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatDialogModule],
+  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatIcon],
   templateUrl: './user-modal.html',
 })
 export class UserModalComponent implements OnInit {
@@ -16,6 +18,7 @@ export class UserModalComponent implements OnInit {
   private dialogRef = inject(MatDialogRef<UserModalComponent>);
   private destroyRef = inject(DestroyRef);
   protected data = inject<{ user?: User }>(MAT_DIALOG_DATA);
+  private snackBar = inject(MatSnackBar);
 
   formSubmitted = false;
 
@@ -50,7 +53,21 @@ export class UserModalComponent implements OnInit {
       return;
     }
 
+    if (!this.userForm.dirty) {
+      this.showNoChangesMessage();
+      return;
+    }
+
     this.dialogRef.close(this.userForm.value);
+  }
+
+  private showNoChangesMessage() {
+    this.snackBar.open('Nenhuma alteração foi feita', 'OK', {
+      duration: 3000,
+      verticalPosition: 'top',
+      horizontalPosition: 'right',
+      panelClass: ['warning-snackbar'],
+    });
   }
 
   private setupMasks() {
@@ -128,5 +145,9 @@ export class UserModalComponent implements OnInit {
       .slice(0, 10)
       .replace(/(\d{2})(\d)/, '($1) $2')
       .replace(/(\d{4})(\d{1,4})$/, '$1-$2');
+  }
+
+  onCancel(): void {
+    this.dialogRef.close();
   }
 }

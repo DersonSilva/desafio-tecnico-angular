@@ -8,7 +8,7 @@ import { UserService } from '../../services/user.service';
 import { UserCardComponent } from '../user-card/user-card';
 import { SearchUserComponent } from '../search-user/search-user';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner';
-import { ErrorMessageComponent } from '../../../../shared/components/erro-message/erro-message';
+import { ErrorMessageComponent } from '../../../../shared/components/erro-message/error-message';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { UserModalComponent } from '../user-modal/user-modal';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -111,16 +111,22 @@ export class UserListComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        const isEdit = !!user;
+
         this.userService.saveUser(result).subscribe({
           next: () => {
             this.loadUsers();
 
-            this.snackBar.open('Usuário salvo com sucesso!', 'OK', {
-              duration: 3000,
-              verticalPosition: 'top',
-              horizontalPosition: 'right',
-              panelClass: ['success-snackbar'],
-            });
+            this.snackBar.open(
+              isEdit ? 'Usuário atualizado com sucesso!' : 'Usuário criado com sucesso!',
+              'OK',
+              {
+                duration: 3000,
+                verticalPosition: 'top',
+                horizontalPosition: 'right',
+                panelClass: ['success-snackbar'],
+              },
+            );
           },
           error: () => {
             this.snackBar.open('Erro ao salvar usuário', 'Fechar', {
