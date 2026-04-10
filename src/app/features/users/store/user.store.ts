@@ -1,13 +1,12 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { User, UserState } from './user.model';
-import { UserService } from '../../../core/services/user.service';
+import { UserService } from '../services/user.service';
 import { catchError, tap, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UserStore {
   private userService = inject(UserService);
 
-  // State
   private state = signal<UserState>({
     users: [],
     loading: false,
@@ -15,7 +14,6 @@ export class UserStore {
     filter: '',
   });
 
-  // Selectors (Computed)
   users = computed(() => {
     const filter = this.state().filter.toLowerCase();
     return this.state().users.filter((u) => u.name.toLowerCase().includes(filter));
@@ -44,6 +42,6 @@ export class UserStore {
           return of([]);
         }),
       )
-      .subscribe(); // Aqui não precisa takeUntilDestroyed
+      .subscribe();
   }
 }

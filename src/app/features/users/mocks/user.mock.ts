@@ -1,4 +1,4 @@
-import { User } from '../../features/users/store/user.model';
+import { User } from '../store/user.model';
 
 export const MOCK_USERS: User[] = [
   {

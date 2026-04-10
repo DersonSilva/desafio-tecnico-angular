@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { User } from '../../store/user.model';
-import { UserService } from '../../../../core/services/user.service';
+import { UserService } from '../../services/user.service';
 import { UserCardComponent } from '../user-card/user-card';
 import { SearchUserComponent } from '../search-user/search-user';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner';
