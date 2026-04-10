@@ -15,26 +15,6 @@
 
   <div class="px-4 md:px-6 pb-4">
     <form [formGroup]="userForm" class="flex flex-col gap-6" novalidate>
-      <!-- <div>
-        <input
-          type="email"
-          placeholder="Usuário (e-mail) *"
-          formControlName="email"
-          class="w-full border-b border-gray-300 focus:border-blue-500 outline-none py-2 text-sm"
-        />
-
-        @if (userForm.get('email')?.invalid && (userForm.get('email')?.touched || formSubmitted)) {
-          <span class="mt-1 text-red-500 text-xs block">
-            @if (userForm.get('email')?.errors?.['required']) {
-              E-mail é obrigatório
-            }
-            @if (userForm.get('email')?.errors?.['email']) {
-              E-mail inválido
-            }
-          </span>
-        }
-      </div> -->
-
       <div>
         <input
           type="email"
@@ -131,6 +111,15 @@
             </span>
           }
         </div>
+      </div>
+
+      <div
+        class="flex items-start md:items-center gap-2 text-blue-400 text-xs font-medium leading-relaxed"
+      >
+        <mat-icon class="text-base mt-[2px] md:mt-0 shrink-0">info</mat-icon>
+        <span class="break-words">
+          O usuário receberá uma senha provisória para acesso ao sistema por SMS.
+        </span>
       </div>
       <div
         [matTooltip]="userForm.invalid ? 'Preencha todos os campos corretamente' : ''"
