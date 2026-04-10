@@ -1,16 +1,24 @@
 import { Component, inject, OnInit, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { User, PhoneType } from '../../store/user.model';
 import { MatIcon } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-user-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatIcon],
+  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatIcon, MatTooltip],
   templateUrl: './user-modal.html',
 })
 export class UserModalComponent implements OnInit {
@@ -19,21 +27,26 @@ export class UserModalComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   protected data = inject<{ user?: User }>(MAT_DIALOG_DATA);
   private snackBar = inject(MatSnackBar);
-
   formSubmitted = false;
+
+  private readonly emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3,}$/;
 
   userForm: FormGroup = this.fb.group({
     id: [null],
     name: ['', [Validators.required, Validators.minLength(3)]],
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required, Validators.pattern(this.emailPattern)]],
     cpf: [
       '',
       [
         Validators.required,
-        (control: any) => (this.isValidCPF(control.value) ? null : { invalidCpf: true }),
+        (control: AbstractControl) =>
+          this.isValidCPF(control.value) ? null : { invalidCpf: true },
       ],
     ],
-    phone: ['', [Validators.required]],
+    phone: [
+      '',
+      [Validators.required, (control: AbstractControl) => this.validatePhoneLength(control)],
+    ],
     phoneType: ['CELULAR' as PhoneType, [Validators.required]],
   });
 
@@ -43,6 +56,31 @@ export class UserModalComponent implements OnInit {
     }
 
     this.setupMasks();
+    this.listenToPhoneTypeChanges();
+  }
+
+  /**
+   * Validador customizado para telefone que considera apenas números
+   * e valida conforme o tipo selecionado (Fixo ou Celular)
+   */
+  private validatePhoneLength(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) return null;
+
+    const numbers = control.value.replace(/\D/g, '');
+    const type = this.userForm?.get('phoneType')?.value;
+
+    const requiredLength = type === 'CELULAR' ? 11 : 10;
+
+    return numbers.length === requiredLength ? null : { incompletePhone: true };
+  }
+
+  private listenToPhoneTypeChanges() {
+    this.userForm
+      .get('phoneType')
+      ?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.userForm.get('phone')?.updateValueAndValidity();
+      });
   }
 
   handleSubmit(): void {
@@ -104,16 +142,13 @@ export class UserModalComponent implements OnInit {
 
   private isValidCPF(cpf: string): boolean {
     if (!cpf) return false;
-
     const cleaned = cpf.replace(/\D/g, '');
-
     if (cleaned.length !== 11 || /^(\d)\1+$/.test(cleaned)) return false;
 
     let sum = 0;
     for (let i = 1; i <= 9; i++) {
       sum += parseInt(cleaned[i - 1]) * (11 - i);
     }
-
     let remainder = (sum * 10) % 11;
     if (remainder >= 10) remainder = 0;
     if (remainder !== parseInt(cleaned[9])) return false;
@@ -122,7 +157,6 @@ export class UserModalComponent implements OnInit {
     for (let i = 1; i <= 10; i++) {
       sum += parseInt(cleaned[i - 1]) * (12 - i);
     }
-
     remainder = (sum * 10) % 11;
     if (remainder >= 10) remainder = 0;
 
@@ -131,7 +165,6 @@ export class UserModalComponent implements OnInit {
 
   private formatPhone(value: string, type: PhoneType): string {
     if (!value) return '';
-
     const numbers = value.replace(/\D/g, '');
 
     if (type === 'CELULAR') {

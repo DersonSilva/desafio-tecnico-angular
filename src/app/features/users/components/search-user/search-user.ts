@@ -1,6 +1,7 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, DestroyRef, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -10,13 +11,14 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [ReactiveFormsModule, MatIconModule],
 })
 export class SearchUserComponent {
-  searchControl = new FormControl('');
+  private destroyRef = inject(DestroyRef);
 
+  searchControl = new FormControl('');
   @Output() searchChange = new EventEmitter<string>();
 
   constructor() {
     this.searchControl.valueChanges
-      .pipe(debounceTime(300))
+      .pipe(debounceTime(300), takeUntilDestroyed(this.destroyRef))
       .subscribe((value) => this.searchChange.emit(value || ''));
   }
 }

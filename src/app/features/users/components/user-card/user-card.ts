@@ -1,8 +1,8 @@
-// user-card.component.ts
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { User } from '../../store/user.model';
 
 @Component({
   selector: 'app-user-card',
@@ -11,6 +11,6 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './user-card.html',
 })
 export class UserCardComponent {
-  @Input() user!: any;
-  @Output() edit = new EventEmitter<any>();
+  @Input() user!: User;
+  @Output() edit = new EventEmitter<User>();
 }

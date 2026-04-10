@@ -1,5 +1,70 @@
+// import { Injectable, signal, computed, inject } from '@angular/core';
+// import { User, UserState } from './user.model';
+// import { UserService } from '../services/user.service';
+// import { catchError, tap, of, switchMap } from 'rxjs';
+
+// @Injectable({ providedIn: 'root' })
+// export class UserStore {
+//   private userService = inject(UserService);
+
+//   private state = signal<UserState>({
+//     users: [],
+//     loading: false,
+//     error: null,
+//     filter: '',
+//   });
+
+//   users = computed(() => {
+//     const filter = this.state().filter.toLowerCase();
+//     return this.state().users.filter((u) => u.name.toLowerCase().includes(filter));
+//   });
+
+//   loading = computed(() => this.state().loading);
+//   error = computed(() => this.state().error);
+
+//   loadUsers() {
+//     this.state.update((s) => ({ ...s, loading: true, error: null }));
+
+//     this.userService
+//       .getUsers()
+//       .pipe(
+//         tap((users) => this.state.update((s) => ({ ...s, users, loading: false }))),
+//         catchError(() => {
+//           this.state.update((s) => ({
+//             ...s,
+//             error: 'Erro ao carregar usuários',
+//             loading: false,
+//           }));
+//           return of([]);
+//         }),
+//       )
+//       .subscribe();
+//   }
+
+//   saveUser(user: User) {
+//     this.state.update((s) => ({ ...s, loading: true }));
+
+//     return this.userService.saveUser(user).pipe(
+//       switchMap(() => this.userService.getUsers()),
+//       tap((users) => this.state.update((s) => ({ ...s, users, loading: false }))),
+//       catchError(() => {
+//         this.state.update((s) => ({
+//           ...s,
+//           error: 'Erro ao salvar usuário',
+//           loading: false,
+//         }));
+//         return of([]);
+//       }),
+//     );
+//   }
+
+//   updateFilter(filter: string) {
+//     this.state.update((s) => ({ ...s, filter }));
+//   }
+// }
+
 import { Injectable, signal, computed, inject } from '@angular/core';
-import { User, UserState } from './user.model';
+import { User } from './user.model';
 import { UserService } from '../services/user.service';
 import { catchError, tap, of } from 'rxjs';
 
@@ -7,41 +72,44 @@ import { catchError, tap, of } from 'rxjs';
 export class UserStore {
   private userService = inject(UserService);
 
-  private state = signal<UserState>({
-    users: [],
-    loading: false,
-    error: null,
-    filter: '',
-  });
+  private _users = signal<User[]>([]);
+  private _loading = signal(false);
+  private _error = signal<string | null>(null);
 
-  users = computed(() => {
-    const filter = this.state().filter.toLowerCase();
-    return this.state().users.filter((u) => u.name.toLowerCase().includes(filter));
-  });
-
-  loading = computed(() => this.state().loading);
-  error = computed(() => this.state().error);
-
-  constructor() {
-    this.loadUsers();
-  }
-
-  updateFilter(filter: string) {
-    this.state.update((s) => ({ ...s, filter }));
-  }
+  users = computed(() => this._users());
+  loading = computed(() => this._loading());
+  error = computed(() => this._error());
 
   loadUsers() {
-    this.state.update((s) => ({ ...s, loading: true, error: null }));
+    this._loading.set(true);
+    this._error.set(null);
 
     this.userService
       .getUsers()
       .pipe(
-        tap((users) => this.state.update((s) => ({ ...s, users, loading: false }))),
-        catchError((err) => {
-          this.state.update((s) => ({ ...s, error: 'Erro ao carregar usuários', loading: false }));
+        tap((users) => {
+          this._users.set(users);
+          this._loading.set(false);
+        }),
+        catchError(() => {
+          this._error.set('Erro ao carregar usuários');
+          this._loading.set(false);
           return of([]);
         }),
       )
       .subscribe();
+  }
+
+  saveUser(user: User) {
+    this._loading.set(true);
+
+    return this.userService.saveUser(user).pipe(
+      tap(() => this.loadUsers()),
+      catchError(() => {
+        this._error.set('Erro ao salvar usuário');
+        this._loading.set(false);
+        return of(null);
+      }),
+    );
   }
 }
