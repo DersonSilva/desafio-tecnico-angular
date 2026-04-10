@@ -1,6 +1,7 @@
 import { Component, DestroyRef, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { User } from '../../store/user.model';
 import { UserService } from '../../services/user.service';
@@ -20,6 +21,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
   imports: [
     CommonModule,
     MatIconModule,
+    MatPaginatorModule,
     UserCardComponent,
     SearchUserComponent,
     LoadingSpinnerComponent,
@@ -41,10 +43,19 @@ export class UserListComponent {
   loading = signal(false);
   error = signal<string | null>(null);
   searchTerm = signal('');
+  pageIndex = signal(0);
+  pageSize = signal(5);
 
   filteredUsers = computed(() => {
     const term = this.searchTerm().toLowerCase();
     return this.users().filter((user) => user.name.toLowerCase().includes(term));
+  });
+
+  // 📄 PAGINAÇÃO
+  paginatedUsers = computed(() => {
+    const start = this.pageIndex() * this.pageSize();
+    const end = start + this.pageSize();
+    return this.filteredUsers().slice(start, end);
   });
 
   constructor() {
@@ -79,6 +90,12 @@ export class UserListComponent {
 
   onSearch(term: string) {
     this.searchTerm.set(term);
+    this.pageIndex.set(0);
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageIndex.set(event.pageIndex);
+    this.pageSize.set(event.pageSize);
   }
 
   onOpenModal(user?: User) {
