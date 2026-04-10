@@ -17,6 +17,8 @@ export class UserModalComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   protected data = inject<{ user?: User }>(MAT_DIALOG_DATA);
 
+  formSubmitted = false;
+
   userForm: FormGroup = this.fb.group({
     id: [null],
     name: ['', [Validators.required, Validators.minLength(3)]],
@@ -29,7 +31,7 @@ export class UserModalComponent implements OnInit {
       ],
     ],
     phone: ['', [Validators.required]],
-    phoneType: ['CELULAR' as PhoneType],
+    phoneType: ['CELULAR' as PhoneType, [Validators.required]],
   });
 
   ngOnInit(): void {
@@ -38,6 +40,17 @@ export class UserModalComponent implements OnInit {
     }
 
     this.setupMasks();
+  }
+
+  handleSubmit(): void {
+    this.formSubmitted = true;
+
+    if (this.userForm.invalid) {
+      this.userForm.markAllAsTouched();
+      return;
+    }
+
+    this.dialogRef.close(this.userForm.value);
   }
 
   private setupMasks() {
@@ -61,21 +74,10 @@ export class UserModalComponent implements OnInit {
           this.userForm.get('phone')?.setValue(formatted, { emitEvent: false });
         }
       });
-
-    this.userForm
-      .get('phoneType')
-      ?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => {
-        const phone = this.userForm.get('phone')?.value;
-        const type = this.userForm.get('phoneType')?.value;
-        const formatted = this.formatPhone(phone, type);
-        this.userForm.get('phone')?.setValue(formatted, { emitEvent: false });
-      });
   }
 
   private formatCPF(value: string): string {
     if (!value) return '';
-
     const numbers = value.replace(/\D/g, '').slice(0, 11);
     return numbers
       .replace(/(\d{3})(\d)/, '$1.$2')
@@ -91,28 +93,25 @@ export class UserModalComponent implements OnInit {
     if (cleaned.length !== 11 || /^(\d)\1+$/.test(cleaned)) return false;
 
     let sum = 0;
-    let remainder;
-
     for (let i = 1; i <= 9; i++) {
-      sum += parseInt(cleaned.substring(i - 1, i)) * (11 - i);
+      sum += parseInt(cleaned[i - 1]) * (11 - i);
     }
 
-    remainder = (sum * 10) % 11;
+    let remainder = (sum * 10) % 11;
     if (remainder >= 10) remainder = 0;
-    if (remainder !== parseInt(cleaned.substring(9, 10))) return false;
+    if (remainder !== parseInt(cleaned[9])) return false;
 
     sum = 0;
     for (let i = 1; i <= 10; i++) {
-      sum += parseInt(cleaned.substring(i - 1, i)) * (12 - i);
+      sum += parseInt(cleaned[i - 1]) * (12 - i);
     }
 
     remainder = (sum * 10) % 11;
     if (remainder >= 10) remainder = 0;
 
-    return remainder === parseInt(cleaned.substring(10, 11));
+    return remainder === parseInt(cleaned[10]);
   }
 
-  // ✅ TELEFONE DINÂMICO
   private formatPhone(value: string, type: PhoneType): string {
     if (!value) return '';
 
@@ -129,15 +128,5 @@ export class UserModalComponent implements OnInit {
       .slice(0, 10)
       .replace(/(\d{2})(\d)/, '($1) $2')
       .replace(/(\d{4})(\d{1,4})$/, '$1-$2');
-  }
-
-  onSave(): void {
-    if (this.userForm.valid) {
-      this.dialogRef.close(this.userForm.value);
-    }
-  }
-
-  onCancel(): void {
-    this.dialogRef.close();
   }
 }
