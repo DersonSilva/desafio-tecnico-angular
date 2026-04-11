@@ -36,11 +36,10 @@ export class UserService {
         users[index] = { ...user };
       }
     } else {
-      user.id = String(Date.now()); // 👈 evita duplicação
+      user.id = String(Date.now());
       users.push({ ...user });
     }
 
-    // 🔥 salva no localStorage
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(users));
 
     return of({ ...user }).pipe(delay(300));

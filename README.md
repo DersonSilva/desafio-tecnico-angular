@@ -1,59 +1,155 @@
-# DesafioTecnicoAngular
+# 🚀 Desafio Técnico Angular — Gestão de Usuários
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
+## 📌 Sobre o Projeto
 
-## Development server
+Este projeto foi desenvolvido como parte de um desafio técnico com o objetivo de demonstrar habilidades em desenvolvimento front-end utilizando **Angular moderno**, boas práticas de arquitetura, testes automatizados e organização de código.
 
-To start a local development server, run:
+A aplicação consiste em uma **listagem de usuários**, com funcionalidades de criação, validação e manipulação de dados através de uma interface moderna utilizando Angular Material e Tailwind.
 
-```bash
-ng serve
+---
+
+## 🧠 Tecnologias Utilizadas
+
+- Angular 21+
+- Angular Material
+- Tailwind CSS
+- RxJS
+- Vitest (testes unitários)
+- Testing Library (Angular)
+- Vite (ambiente de build e testes)
+
+---
+
+## ⚙️ Funcionalidades
+
+✔ Listagem de usuários  
+✔ Paginação de usuários  
+✔ Busca e filtro por nome/email  
+✔ Criação de usuário via modal  
+✔ Validação de formulário (nome, email, CPF, telefone)  
+✔ Tipagem forte com TypeScript  
+✔ Interface responsiva  
+✔ Feedback visual com snackbar  
+✔ Estrutura modular organizada
+
+---
+
+## 🧪 Testes
+
+O projeto possui testes unitários implementados com:
+
+- Vitest
+- @testing-library/angular
+
+### ✔ Cobertura de testes
+
+- Cobertura total: **+90%**
+- Componentes testados:
+  - User Card
+  - User Modal
+
+### 🧠 Destaque técnico
+
+Foi realizada a configuração do ambiente de testes para suportar corretamente:
+
+- `templateUrl` (HTML externo)
+- Angular TestBed com Vitest
+- Integração com Vite Plugin Angular em modo JIT
+
+---
+
+## 📁 Estrutura do Projeto
+
+A estrutura segue o padrão de organização por feature, contendo componentes, serviços, estado e mocks.
+
+```
+src/
+ ├── app/
+ │   └── features/
+ │       └── users/
+ │           ├── components/
+ │           ├── mocks/
+ │           ├── services/
+ │           ├── store/
+ │           │   └── user.model.ts
+ ├── setup-tests.ts
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 🚀 Como rodar o projeto
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### 🔧 Instalar dependências
 
-```bash
-ng generate component component-name
+npm install
+
+---
+
+### ▶️ Rodar aplicação
+
+npm start
+
+---
+
+### 🧪 Rodar testes
+
+npm test
+
+---
+
+### 📊 Rodar testes com coverage
+
+npm run test:coverage
+
+---
+
+## ⚙️ Configuração de Testes
+
+Para garantir funcionamento correto com Angular 21 + Vitest, foi necessário:
+
+- Uso do plugin:
+  - `@analogjs/vite-plugin-angular`
+
+- Ativação do modo JIT
+
+- Configuração manual do ambiente Angular:
+
+```
+getTestBed().initTestEnvironment(
+  BrowserDynamicTestingModule,
+  platformBrowserDynamicTesting()
+);
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- Inclusão do setup no `tsconfig.spec.json`
+- Import do setup nos testes
 
-```bash
-ng generate --help
-```
+---
 
-## Building
+## 🎯 Decisões Técnicas
 
-To build the project run:
+- Componentes standalone (Angular moderno)
+- Organização por feature
+- Reactive Forms para validação
+- Testes focados em comportamento (Testing Library)
+- Manutenção de templates HTML externos
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 👨‍💻 Autor
 
-## Running unit tests
+Desenvolvido por **Anderson Pereira da Silva**
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+---
 
-```bash
-ng test
-```
+## 🏁 Conclusão
 
-## Running end-to-end tests
+O projeto atende aos requisitos do desafio técnico, entregando:
 
-For end-to-end (e2e) testing, run:
+✔ Código limpo e organizado
+✔ Paginação implementada
+✔ Alta cobertura de testes
+✔ Arquitetura moderna com Angular
+✔ Integração funcional entre Angular + Vitest
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
