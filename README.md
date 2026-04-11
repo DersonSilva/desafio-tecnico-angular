@@ -22,14 +22,14 @@ A aplicação consiste em uma **listagem de usuários**, com funcionalidades de 
 
 ## ⚙️ Funcionalidades
 
-✔ Listagem de usuários  
-✔ Paginação de usuários  
-✔ Busca e filtro por nome/email  
-✔ Criação de usuário via modal  
-✔ Validação de formulário (nome, email, CPF, telefone)  
-✔ Tipagem forte com TypeScript  
-✔ Interface responsiva  
-✔ Feedback visual com snackbar  
+✔ Listagem de usuários
+✔ Paginação de usuários
+✔ Busca e filtro por nome/email
+✔ Criação de usuário via modal
+✔ Validação de formulário (nome, email, CPF, telefone)
+✔ Tipagem forte com TypeScript
+✔ Interface responsiva
+✔ Feedback visual com snackbar
 ✔ Estrutura modular organizada
 
 ---
@@ -47,6 +47,7 @@ O projeto possui testes unitários implementados com:
 - Componentes testados:
   - User Card
   - User Modal
+  - Search User
 
 ### 🧠 Destaque técnico
 
@@ -79,27 +80,53 @@ src/
 
 ## 🚀 Como rodar o projeto
 
+### 📥 Clonar repositório
+
+```
+git clone https://github.com/DersonSilva/desafio-tecnico-angular.git
+```
+
+```
+cd desafio-tecnico-angular
+```
+
+---
+
 ### 🔧 Instalar dependências
 
+```
 npm install
+```
 
 ---
 
 ### ▶️ Rodar aplicação
 
+```
 npm start
+```
+
+A aplicação estará disponível em:
+
+```
+http://localhost:4200
+```
 
 ---
 
 ### 🧪 Rodar testes
 
+```
 npm test
+```
 
 ---
 
 ### 📊 Rodar testes com coverage
 
+```
 npm run test:coverage
+```
 
 ---
 
@@ -148,6 +175,7 @@ O projeto atende aos requisitos do desafio técnico, entregando:
 
 ✔ Código limpo e organizado
 ✔ Paginação implementada
+✔ Busca dinâmica funcional
 ✔ Alta cobertura de testes
 ✔ Arquitetura moderna com Angular
 ✔ Integração funcional entre Angular + Vitest
