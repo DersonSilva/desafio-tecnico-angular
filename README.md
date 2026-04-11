@@ -181,3 +181,9 @@ O projeto atende aos requisitos do desafio técnico, entregando:
 ✔ Integração funcional entre Angular + Vitest
 
 ---
+
+## 📄 Respostas do Desafio
+
+As respostas estão disponíveis no arquivo:
+
+📎 respostas-desafio-anderson-silva.pdf
